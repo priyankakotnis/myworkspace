@@ -1,0 +1,9 @@
+The main program for testing the code is placed in file phoneBookTest.cpp 
+
+chmod 755 makemake makedepend
+
+We used below steps to create makefile, build and run the code:
+
+./makemake
+make
+./phoneBookTest

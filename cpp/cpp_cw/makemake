@@ -1,0 +1,60 @@
+#! /bin/sh
+
+warnings='-Wall -Wcast-qual -Woverloaded-virtual'
+warnings=
+warnings='-Wall -std=c++11 -pedantic -g'
+
+srcfiles=`echo *.cpp`
+case "${srcfiles}" in
+'*.cpp')	echo "${0}: there are no C++ source files (.cpp) here" >&2
+	exit 1 ;;
+esac
+
+hdrfiles=`echo *.h`
+case "${hdrfiles}" in
+'*.h')	hdrfiles= ;;
+esac
+
+mains=`egrep -l '^(.*[ 	])?main[ 	]*\(' ${srcfiles} | sed 's/\.cpp$//'`
+mains=`echo ${mains}`
+
+objects=`(
+		for i in ${mains}; do echo ${i}.cpp; done
+		for i in ${srcfiles}; do echo ${i}; done
+	) | sort | uniq -u | sed 's/\.cpp$/.o/'`
+objects=`echo ${objects}`
+libs=
+includes=
+
+(
+echo "CXXFLAGS = ${warnings} ${includes}
+CC=\$(CXX)
+CFLAGS=\$(CXXFLAGS)
+LIBS	= ${libs}
+PROGS	= ${mains}
+OBJECTS	= ${objects}
+SHELL	= /bin/sh"
+
+echo '
+all: $(PROGS)'
+
+for i in ${mains}
+do
+	echo "
+${i}: ${i}.o \$(OBJECTS)
+	\$(CXX) \$(CXXFLAGS) -o ${i} ${i}.o \$(OBJECTS) \$(LIBS)"
+done
+
+echo '
+clean:
+	-/bin/rm -f $(PROGS) *.o Makefile.bak
+
+Makefile:
+	'"`dirname ${0}`"'/makemake
+
+depend:
+	'"`dirname ${0}`"'/makedepend $(CXXFLAGS) *.cpp
+'
+) >Makefile
+
+make depend

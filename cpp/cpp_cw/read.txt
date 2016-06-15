@@ -1,0 +1,6 @@
+<person S Smith N Tom T +39.921.1434 >
+<person S Smith N Rob E msmith@gmail.com  >
+<person S Kotnis N Arati T +39.921.1434 E msmith@gmail.com >
+<person S Kotnis N Priyanka T +39.921.1434 E msmith@gmail.com >
+<person S Smith N Mary T +39.921.1434 E msmith@gmail.com >
+<person S Smith N Eva >
