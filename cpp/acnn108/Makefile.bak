@@ -1,0 +1,22 @@
+CXXFLAGS = -Wall -std=c++11 -pedantic -g 
+CC=$(CXX)
+CFLAGS=$(CXXFLAGS)
+LIBS	= 
+PROGS	= phoneBookTest
+OBJECTS	= common.o contacts.o person.o person_with_email.o person_with_telephone_and_email.o person_with_telephone.o
+SHELL	= /bin/sh
+
+all: $(PROGS)
+
+phoneBookTest: phoneBookTest.o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o phoneBookTest phoneBookTest.o $(OBJECTS) $(LIBS)
+
+clean:
+	-/bin/rm -f $(PROGS) *.o Makefile.bak
+
+Makefile:
+	./makemake
+
+depend:
+	./makedepend $(CXXFLAGS) *.cpp
+
